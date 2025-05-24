@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediHub - Smart Medication Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: rgb(69, 134, 44);
+            --primary-light: #dae1e7;
+            --secondary: #27b13a;
+            --accent: #f3670a;
+            --light: #f8f9fa;
+            --dark: #1a1d1f;
+            --gray: #c6cacf;
+            --light-gray: #e9ecef;
+            --success: #28a745;
+            --warning: #be626e;
+            --danger: #dc3545;
+            --border-radius: 29px;
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --progress-bg: #e0e7ff;
+            --progress-active: #4f46e5;
+            --progress-completed: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #c5c5c5;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav-bar {
+            background: var(--primary);
+            padding: 10px;
+            color: white;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-bar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0 20px;
+        }
+
+        .nav-bar a:hover {
+            color: var(--accent);
+        }
+
+        .auth-section {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background: #e6f2e6;
+        }
+
+        .auth-box {
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 350px;
+        }
+
+        .auth-box h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .auth-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .auth-box button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .auth-box button:hover {
+            background: var(--accent);
+        }
+
+        .auth-box .error {
+            color: var(--danger);
+            font-size: 0.9rem;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .bottom-text {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .bottom-text a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        header {
+            background: linear-gradient(198deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 90px 0;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            margin-bottom: 4rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 80px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 300px;
+            border-radius: 50%;
+            background-color: white;
+            object-fit: cover;
+        }
+
+        .logo .company-logo {
+            height: 160px;
+            border-radius: 50%;
+            background-color: white;
+            object-fit: contain;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .tagline {
+            font-style: Cochocib Script Latin Pro;
+            font-size: 1rem;
+        }
+
+        .header-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-buttons img {
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            object-fit: cover;
+        }
+
+        .profile-btn, .logout-btn {
+            background: var(--accent);
+            color: white;
+            padding: 10px 40px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .profile-btn:hover, .logout-btn:hover {
+            background: var(--primary);
+        }
+
+        .profile-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 80px;
+            margin-bottom: 80px;
+            box-shadow: var(--box-shadow);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .profile-photo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-section img {
+            width: 150px;
+            height: 250px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: inline-block;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            background-color: white;
+        }
+
+        .profile-section img:hover {
+            opacity: 0.9;
+        }
+
+        .profile-section h2 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-section .form-group {
+            margin-bottom: 20px;
+        }
+
+        .profile-section input[type="file"] {
+            display: none;
+        }
+
+        .profile-section textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            position: relative;
+            background: var(--progress-bg);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+            flex: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .progress-step:hover {
+            transform: scale(1.1);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            background-color: var(--light-gray);
+            color: var(--gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 35px;
+            left: 10%;
+            right: 10%;
+            height: 8px;
+            background-color: var(--light-gray);
+            z-index: 0;
+            border-radius: 4px;
+        }
+
+        .progress-bar .active .step-number {
+            background-color: var(--progress-active);
+            color: white;
+        }
+
+        .progress-bar .completed .step-number {
+            background-color: var(--progress-completed);
+            color: white;
+        }
+
+        .form-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            border: 1px solid var(--light-gray);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .checkbox-item {
+            flex: 1 1 200px;
+            display: flex;
+            align-items: center;
+            background: var(--light);
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--light-gray);
+        }
+
+        .checkbox-item:hover {
+            background: var(--primary-light);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: 1px solid var(--secondary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .results-container {
+            display: none;
+        }
+
+        .medication-card {
+            background: var(--light);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--light-gray);
+            border-left: 5px solid var(--primary);
+        }
+
+        .medication-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .medication-name {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .medication-type {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50px;
+            padding: 4px 10px;
+            font-size: 0.8rem;
+        }
+
+        .medication-details {
+            display: none;
+        }
+
+        .medication-details.active {
+            display: block;
+        }
+
+        .detail-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+
+        .detail-label {
+            font-weight: bold;
+            min-width: 120px;
+            color: var(--gray);
+        }
+
+        .detail-value {
+            flex: 1;
+        }
+
+        .warning {
+            color: var(--danger);
+            font-weight: bold;
+        }
+
+        .disclaimer {
+            background: var(--light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .disclaimer strong {
+            color: var(--danger);
+        }
+
+        .error {
+            color: var(--danger);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .spinner {
+            border: 4px solid var(--light-gray);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--gray);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--light-gray);
+            background: var(--light-gray);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header-buttons {
+                align-items: center;
+            }
+
+            .progress-bar {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .progress-step {
+                flex: 0 0 calc(50% - 15px);
+            }
+
+            .form-section {
+                padding: 20px;
+            }
+
+            .checkbox-item {
+                flex: 1 1 100%;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .medication-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .detail-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .detail-label {
+                min-width: 100%;
+            }
+
+            .profile-section img {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="login-section" class="auth-section">
+        <div class="auth-box">
+            <h2>MediHub Login</h2>
+            <div class="error" id="loginError"></div>
+            <input type="text" id="loginUsername" placeholder="Username" aria-label="Username" />
+            <input type="password" id="loginPassword" placeholder="Password" aria-label="Password" />
+            <button onclick="login()">Login</button>
+            <div class="bottom-text">
+                Don't have an account? <a href="#" onclick="showRegister()">Register here</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="register-section" class="auth-section" style="display: none;">
+        <div class="auth-box">
+            <h2>Register</h2>
+            <div class="error" id="registerError"></div>
+            <input type="text" id="registerUsername" placeholder="Choose username" aria-label="Username" />
+            <input type="password" id="registerPassword" placeholder="Choose password" aria-label="Password" />
+            <button onclick="register()">Register</button>
+            <div class="bottom-text">
+                Already have an account? <a href="#" onclick="showLogin()">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-section" style="display: none;">
+        <nav class="nav-bar">
+        </nav>
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <img class="company-logo" src="C:\Users\sachi\OneDrive\Desktop\1.jpg" alt="MediHub Company Logo">
+                    <div>
+                        <h1>MediHub</h1>
+                        <p class="tagline">Smart medication recommendations powered by Drugs.com</p>
+                    </div>
+                </div>
+                <div class="header-buttons">
+                    <img id="headerProfilePhoto" alt="User Profile Photo">
+                    <a href="#" class="profile-btn" onclick="showProfile()">Profile</a>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="container">
+            <div id="profile-section" class="profile-section" style="display: none;">
+                <div class="profile-photo-container">
+                    <img id="profilePhoto" alt="Profile Photo" onclick="document.getElementById('profilePhotoInput').click()">
+                    <input type="file" id="profilePhotoInput" accept="image/*" aria-label="Profile Photo Upload">
+                </div>
+                <h2>User Profile</h2>
+                <div class="form-group">
+                    <label for="profileName">Name</label>
+                    <input type="text" class="form-control" id="profileName" placeholder="Enter your name" aria-label="Name">
+                </div>
+                <div class="form-group">
+                    <label for="profileEmail">Email</label>
+                    <input type="email" class="form-control" id="profileEmail" placeholder="Enter your email" aria-label="Email">
+                </div>
+                <div class="form-group">
+                    <label for="profileAbout">About</label>
+                    <textarea class="form-control" id="profileAbout" rows="4" placeholder="Tell us about yourself" aria-label="About"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="profileHobbies">Hobbies</label>
+                    <textarea class="form-control" id="profileHobbies" rows="3" placeholder="List your hobbies or interests" aria-label="Hobbies"></textarea>
+                </div>
+                <div class="form-group btn-group">
+                    <button class="btn btn-outline" onclick="showMain()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="btn btn-primary" onclick="saveProfile()">Save Profile</button>
+                </div>
+            </div>
+
+            <div id="medication-finder" style="display: block;">
+                <div class="progress-bar">
+                    <div class="progress-step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Symptoms</div>
+                    </div>
+                    <div class="progress-step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Health History</div>
+                    </div>
+                    <div class="progress-step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Dietary Recommendations</div>
+                    </div>
+                    <div class="progress-step" data-step="4">
+                        <div class="step-number">4</div>
+                        <div class="step-label">Medication Results</div>
+                    </div>
+                </div>
+
+                <form id="medicationForm">
+                    <div class="form-section active" id="symptoms-section">
+                        <h2><i class="fas fa-thermometer-half"></i> What symptoms are you experiencing?</h2>
+                        <div class="form-group">
+                            <label for="primarySymptomInput">Primary Symptom</label>
+                            <input type="text" class="form-control" id="primarySymptomInput" list="symptoms" placeholder="Search symptoms..." required aria-label="Primary Symptom">
+                            <div class="error" id="primarySymptomInputError"></div>
+                            <datalist id="symptoms">
+                                <option value="Headache">Headache</option>
+                                <option value="Fever">Fever</option>
+                                <option value="Cough">Cough</option>
+                                <option value="Sore Throat">Sore Throat</option>
+                                <option value="Nasal Congestion">Nasal Congestion</option>
+                                <option value="Body Aches">Body Aches</option>
+                                <option value="Heartburn">Heartburn</option>
+                                <option value="Diarrhea">Diarrhea</option>
+                                <option value="Constipation">Constipation</option>
+                                <option value="Rash">Skin Rash</option>
+                                <option value="Fatigue">Fatigue</option>
+                                <option value="Dizziness">Dizziness</option>
+                                <option value="Nausea">Nausea</option>
+                                <option value="Vomiting">Vomiting</option>
+                                <option value="Abdominal Pain">Abdominal Pain</option>
+                                <option value="Chest Pain">Chest Pain</option>
+                                <option value="Shortness of Breath">Shortness of Breath</option>
+                                <option value="Joint Pain">Joint Pain</option>
+                                <option value="Muscle Weakness">Muscle Weakness</option>
+                                <option value="Numbness or Tingling">Numbness or Tingling</option>
+                                <option value="Seizures">Seizures</option>
+                                <option value="Mood Changes">Mood Changes</option>
+                            </datalist>
+                        </div>
+                        <div class="form-group">
+                            <label>Additional Symptoms (select all that apply)</label>
+                            <fieldset>
+                                <legend class="sr-only">Additional Symptoms</legend>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="cold" aria-label="Cold"> Cold</label>
+                                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="chills" aria-label="Chills"> Chills</label>
+                                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="fatigue" aria-label="Fatigue"> Fatigue</label>
+                                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="nausea" aria-label="Nausea"> Nausea</label>
+                                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="dizziness" aria-label="Dizziness"> Dizziness</label>
+                                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="sneezing" aria-label="Sneezing"> Sneezing</label>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="form-group">
+                            <label for="symptomDuration">How long have you had these symptoms?</label>
+                            <select class="form-control" id="symptomDuration" required aria-label="Symptom Duration">
+                                <option value="">Select duration</option>
+                                <option value="less than 24 hours">Less than 24 hours</option>
+                                <option value="1-3 days">1-3 days</option>
+                                <option value="4-7 days">4-7 days</option>
+                                <option value="1-2 weeks">1-2 weeks</option>
+                                <option value="over 2 weeks">Over 2 weeks</option>
+                            </select>
+                            <div class="error" id="symptomDurationError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="symptomSeverity">Symptom Severity</label>
+                            <select class="form-control" id="symptomSeverity" required aria-label="Symptom Severity">
+                                <option value="">Select severity</option>
+                                <option value="mild">Mild - Annoying but doesn't interfere with daily activities</option>
+                                <option value="moderate">Moderate - Limits some daily activities</option>
+                                <option value="severe">Severe - Prevents most daily activities</option>
+                            </select>
+                            <div class="error" id="symptomSeverityError"></div>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline" disabled><i class="fas fa-arrow-left"></i> Previous</button>
+                            <button type="button" class="btn btn-primary next-btn">Next <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="form-section" id="health-section">
+                        <h2><i class="fas fa-medkit"></i> Your Health History</h2>
+                        <div class="form-group">
+                            <label for="Name">Name</label>
+                            <input type="text" class="form-control" id="Name" required aria-label="Name">
+                            <div class="error" id="NameError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input type="number" class="form-control" id="age" min="1" max="120" required aria-label="Age">
+                            <div class="error" id="ageError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="idProof">ID Proof</label>
+                            <select class="form-control" id="idProof" required aria-label="ID Proof">
+                                <option value="">Select ID Proof</option>
+                                <option value="Aadhaar Card">Aadhaar Card</option>
+                                <option value="PAN Card">PAN Card</option>
+                                <option value="Driving License">Driving License</option>
+                                <option value="Passport">Passport</option>
+                                <option value="Voter ID">Voter ID</option>
+                            </select>
+                            <div class="error" id="idProofError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="idProofNumber">ID Proof Number</label>
+                            <input type="text" class="form-control" id="idProofNumber" required aria-label="ID Proof Number">
+                            <div class="error" id="idProofNumberError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="bloodGroup">Blood Group</label>
+                            <select class="form-control" id="bloodGroup" required aria-label="Blood Group">
+                                <option value="">Select Blood Group</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="Unknown">Unknown</option>
+                            </select>
+                            <div class="error" id="bloodGroupError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="streetAddress">Street Address</label>
+                            <input type="text" class="form-control" id="streetAddress" required aria-label="Street Address">
+                            <div class="error" id="streetAddressError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" class="form-control" id="city" required aria-label="City">
+                            <div class="error" id="cityError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input type="text" class="form-control" id="state" list="stateOptions" placeholder="Search state..." required aria-label="State">
+                            <div class="error" id="stateError"></div>
+                            <datalist id="stateOptions">
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                <option value="Assam">Assam</option>
+                                <option value="Bihar">Bihar</option>
+                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                <option value="Goa">Goa</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Haryana">Haryana</option>
+                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                <option value="Jharkhand">Jharkhand</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Kerala">Kerala</option>
+                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Manipur">Manipur</option>
+                                <option value="Meghalaya">Meghalaya</option>
+                                <option value="Mizoram">Mizoram</option>
+                                <option value="Nagaland">Nagaland</option>
+                                <option value="Odisha">Odisha</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Sikkim">Sikkim</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Telangana">Telangana</option>
+                                <option value="Tripura">Tripura</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="Uttarakhand">Uttarakhand</option>
+                                <option value="West Bengal">West Bengal</option>
+                                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                <option value="Chandigarh">Chandigarh</option>
+                                <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                <option value="Ladakh">Ladakh</option>
+                                <option value="Lakshadweep">Lakshadweep</option>
+                                <option value="Puducherry">Puducherry</option>
+                            </datalist>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone-number-input">Phone Number</label>
+                            <div style="display: flex; border: 1px solid var(--light-gray); border-radius: var(--border-radius); padding: 5px;">
+                                <select id="country-code" style="border: none; padding-right: 10px; width: 100px;" aria-label="Country Code">
+                                    <option value="+1">+1 (USA)</option>
+                                    <option value="+91">+91 (India)</option>
+                                    <option value="+688">+688 (Tuvalu)</option>
+                                    <option value="+86">+86 (China)</option>
+                                    <option value="81">+81 (Japan)</option>
+                                    <option value="+44">+44 (United Kingdom)</option>
+                                    <option value="+61">+61 (Australia)</option>
+                                    <option value="+27">+27 (South Africa)</option>
+                                </select>
+                                <input type="tel" id="phone-number-input" style="border: none; flex: 1;" placeholder="Enter phone number" required aria-label="Phone Number">
+                            </div>
+                            <div class="error" id="phone-number-inputError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Would you like to consult a doctor?</label>
+                            <fieldset>
+                                <legend class="sr-only">Doctor Consultancy</legend>
+                                <div>
+                                    <label class="radio-inline"><input type="radio" name="doctorConsultancy" value="yes" required aria-label="Yes"> Yes</label>
+                                    <label class="radio-inline"><input type="radio" name="doctorConsultancy" value="no" aria-label="No"> No</label>
+                                </div>
+                            </fieldset>
+                            <div class="error" id="doctorConsultancyError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pincode">Pincode/Zipcode</label>
+                            <input type="text" class="form-control" id="pincode" required aria-label="Pincode">
+                            <div class="error" id="pincodeError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select class="form-control" id="gender" required aria-label="Gender">
+                                <option value="">Select gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other/Prefer not to say</option>
+                            </select>
+                            <div class="error" id="genderError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Do you have any of these medical conditions? (select all that apply)</label>
+                            <fieldset>
+                                <legend class="sr-only">Medical Conditions</legend>
+                                <div class="checkbox-group" id="conditions-group">
+                                    <label class="checkbox-item"><input type="checkbox" name="conditions" value="high blood pressure" aria-label="High Blood Pressure"> High Blood Pressure</label>
+                                    <label class="checkbox-item"><input type="checkbox" name="conditions" value="diabetes" aria-label="Diabetes"> Diabetes</label>
+                                    <label class="checkbox-item"><input type="checkbox" name="conditions" value="heart disease" aria-label="Heart Disease"> Heart Disease</label>
+                                    <label class="checkbox-item"><input type="checkbox" name="conditions" value="liver disease" aria-label="Liver Disease"> Liver Disease</label>
+                                    <label class="checkbox-item"><input type="checkbox" name="conditions" value="kidney disease" aria-label="Kidney Disease"> Kidney Disease</label>
+                                    <label class="checkbox-item"><input type="checkbox" name="conditions" value="asthma" aria-label="Asthma"> Asthma</label>
+                                    <label class="checkbox-item"><input type="checkbox" name="conditions" value="pregnant" aria-label="Pregnant or Breastfeeding"> Pregnant or Breastfeeding</label>
+                                    <label class="checkbox-item"><input type="checkbox" name="conditions" value="none" aria-label="None of the above"> None of the above</label>
+                                </div>
+                            </fieldset>
+                            <div class="error" id="conditionsError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="currentMeds">Are you currently taking any medications? (please list)</label>
+                            <textarea class="form-control" id="currentMeds" rows="3" placeholder="e.g., Lisinopril 10mg daily, Metformin 500mg twice daily" aria-label="Current Medications"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="allergies">Do you have any known allergies to medications?</label>
+                            <textarea class="form-control" id="allergies" rows="2" placeholder="e.g., Penicillin causes rash" aria-label="Allergies"></textarea>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline prev-btn"><i class="fas fa-arrow-left"></i> Previous</button>
+                            <button type="button" class="btn btn-primary next-btn">Next <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="form-section" id="diet-section">
+                        <h2><i class="fas fa-utensils"></i> Dietary Recommendations</h2>
+                        <div class="form-group">
+                            <label for="diseaseSelect">Select your condition for a diet plan:</label>
+                            <select class="form-control" id="diseaseSelect" aria-label="Condition for Diet Plan">
+                                <option value="" disabled selected>Select condition</option>
+                                <option value="diabetes">Diabetes</option>
+                                <option value="hypertension">Hypertension</option>
+                                <option value="heartDisease">Heart Disease</option>
+                                <option value="kidneyDisease">Kidney Disease</option>
+                                <option value="obesity">Obesity</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" onclick="showDietPlan()">Show Diet Plan</button>
+                        </div>
+                        <div id="dietPlan" style="display: none;">
+                            <h3>Diet Plan</h3>
+                            <ul id="dietList" style="list-style: none; padding: 0;"></ul>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline prev-btn"><i class="fas fa-arrow-left"></i> Previous</button>
+                            <button type="button" class="btn btn-primary" id="search-btn"><i class="fas fa-search"></i> Search Medications</button>
+                        </div>
+                    </div>
+
+                    <div class="form-section" id="results-section">
+                        <h2><i class="fas fa-pills"></i> Medication Recommendations</h2>
+                        <div class="loading-spinner" id="loadingSpinner">
+                            <div class="spinner"></div>
+                            <p>Searching for medication recommendations based on your symptoms...</p>
+                        </div>
+                        <div class="results-container" id="resultsContainer">
+                            <div id="medicationResults"></div>
+                            <div class="disclaimer">
+                                <p><strong>Disclaimer:</strong> These medication recommendations are provided for informational purposes only and do not constitute medical advice. Always consult with a qualified healthcare provider before starting any new medication.</p>
+                                <p>Results are powered by Drugs.com's database and are not endorsed by MediHub.</p>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline prev-btn"><i class="fas fa-arrow-left"></i> Previous</button>
+                            <button type="button" class="btn btn-primary" id="new-search-btn"><i class="fas fa-redo"></i> New Search</button>
+                            <button type="button" class="btn btn-outline" id="print-btn"><i class="fas fa-print"></i> Print All</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <footer>
+            <div class="container">
+                <p>MediHub © 2025 | This tool is for educational purposes only | Powered by Drugs.com API</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function sanitizeInput(input) {
+            const div = document.createElement('div');
+            div.textContent = input;
+            return div.innerHTML;
+        }
+
+        async function hashPassword(password) {
+            const msgBuffer = new TextEncoder().encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        function getUsers() {
+            return JSON.parse(localStorage.getItem("users") || "{}");
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem("users", JSON.stringify(users));
+        }
+
+        async function login() {
+            const username = sanitizeInput(document.getElementById("loginUsername").value.trim());
+            const password = document.getElementById("loginPassword").value;
+            const error = document.getElementById("loginError");
+            error.textContent = "";
+
+            if (!username || !password) {
+                error.textContent = "Please enter both username and password.";
+                return;
+            }
+
+            const users = getUsers();
+            const hashedPassword = await hashPassword(password);
+
+            if (users[username] && users[username] === hashedPassword) {
+                localStorage.setItem("loggedIn", "true");
+                localStorage.setItem("currentUser", username);
+                localStorage.setItem("loginTime", Date.now());
+                showMain();
+                alert("Login successful! Welcome, " + username);
+            } else {
+                error.textContent = "Invalid username or password.";
+            }
+        }
+
+        async function register() {
+            const username = sanitizeInput(document.getElementById("registerUsername").value.trim());
+            const password = document.getElementById("registerPassword").value;
+            const error = document.getElementById("registerError");
+            error.textContent = "";
+
+            if (!username || !password) {
+                error.textContent = "Please enter username and password.";
+                return;
+            }
+
+            const users = getUsers();
+            if (users[username]) {
+                error.textContent = "Username already exists. Try another.";
+                return;
+            }
+
+            const hashedPassword = await hashPassword(password);
+            users[username] = hashedPassword;
+            saveUsers(users);
+            alert("Registration successful! You can now login.");
+            document.getElementById("registerUsername").value = "";
+            document.getElementById("registerPassword").value = "";
+            showLogin();
+        }
+
+        function logout() {
+            localStorage.removeItem("loggedIn");
+            localStorage.removeItem("currentUser");
+            localStorage.removeItem("loginTime");
+            localStorage.removeItem("profileData");
+            showLogin();
+        }
+
+        function showLogin() {
+            document.getElementById("login-section").style.display = "flex";
+            document.getElementById("register-section").style.display = "none";
+            document.getElementById("main-section").style.display = "none";
+        }
+
+        function showRegister() {
+            document.getElementById("login-section").style.display = "none";
+            document.getElementById("register-section").style.display = "flex";
+            document.getElementById("main-section").style.display = "none";
+        }
+
+        function showMain() {
+            document.getElementById("login-section").style.display = "none";
+            document.getElementById("register-section").style.display = "none";
+            document.getElementById("main-section").style.display = "block";
+            document.getElementById("profile-section").style.display = "none";
+            document.getElementById("medication-finder").style.display = "block";
+            const profileData = JSON.parse(localStorage.getItem("profileData") || "{}");
+            document.getElementById("headerProfilePhoto").src = profileData.photo || "";
+        }
+
+        function showProfile() {
+            document.getElementById("profile-section").style.display = "block";
+            document.getElementById("medication-finder").style.display = "none";
+            loadProfile();
+        }
+
+        function saveProfile() {
+            const name = sanitizeInput(document.getElementById("profileName").value);
+            const email = sanitizeInput(document.getElementById("profileEmail").value);
+            const about = sanitizeInput(document.getElementById("profileAbout").value);
+            const hobbies = sanitizeInput(document.getElementById("profileHobbies").value);
+            const photo = document.getElementById("profilePhoto").src;
+
+            const profileData = { name, email, about, hobbies, photo };
+            localStorage.setItem("profileData", JSON.stringify(profileData));
+            alert("Profile saved successfully!");
+            showMain();
+        }
+
+        function loadProfile() {
+            const profileData = JSON.parse(localStorage.getItem("profileData") || "{}");
+            document.getElementById("profileName").value = profileData.name || "";
+            document.getElementById("profileEmail").value = profileData.email || "";
+            document.getElementById("profileAbout").value = profileData.about || "";
+            document.getElementById("profileHobbies").value = profileData.hobbies || "";
+            document.getElementById("profilePhoto").src = profileData.photo || "";
+        }
+
+        document.getElementById("profilePhotoInput").addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                console.log("No file selected");
+                return;
+            }
+
+            if (!file.type.match('image.*')) {
+                alert("Please select a valid image file.");
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert("Image file is too large. Please select an image under 5MB.");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const img = document.getElementById("profilePhoto");
+                    img.src = e.target.result;
+                    console.log("Photo uploaded successfully");
+                } catch (error) {
+                    console.error("Error updating profile photo:", error);
+                    alert("Failed to upload photo. Please try again.");
+                }
+            };
+            reader.onerror = function() {
+                console.error("Error reading file");
+                alert("Error reading the image file. Please try again.");
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function checkSession() {
+            const loginTime = localStorage.getItem("loginTime");
+            if (loginTime && (Date.now() - loginTime) > 30 * 60 * 1000) {
+                logout();
+                alert("Session timed out. Please log in again.");
+            }
+        }
+
+        const diets = {
+            diabetes: [
+                "Choose whole grains instead of refined grains",
+                "Eat plenty of non-starchy vegetables",
+                "Limit sugary foods and drinks",
+                "Include lean proteins like fish and chicken",
+                "Monitor carbohydrate intake and spread it throughout the day"
+            ],
+            hypertension: [
+                "Reduce salt (sodium) intake",
+                "Eat more fruits and vegetables",
+                "Choose low-fat dairy products",
+                "Limit alcohol consumption",
+                "Avoid processed and fried foods"
+            ],
+            heartDisease: [
+                "Eat plenty of fruits and vegetables",
+                "Choose healthy fats such as olive oil and nuts",
+                "Limit saturated and trans fats",
+                "Increase fiber intake with whole grains",
+                "Limit salt and added sugars"
+            ],
+            kidneyDisease: [
+                "Limit protein intake as advised by your doctor",
+                "Reduce sodium and potassium in your diet",
+                "Avoid processed foods",
+                "Drink plenty of water unless restricted",
+                "Consult with a dietitian for personalized plan"
+            ],
+            obesity: [
+                "Eat a balanced diet with portion control",
+                "Increase intake of fruits, vegetables, and whole grains",
+                "Limit high-calorie and sugary foods",
+                "Choose lean proteins",
+                "Stay hydrated and reduce sugary drinks"
+            ]
+        };
+
+        function showDietPlan() {
+            const dietDiv = document.getElementById('dietPlan');
+            const dietList = document.getElementById('dietList');
+            const disease = document.getElementById('diseaseSelect').value;
+
+            if (!disease) {
+                alert("Please select a condition first.");
+                return;
+            }
+
+            dietList.innerHTML = "";
+            diets[disease].forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="fas fa-check-circle" style="color: var(--primary); margin-right: 10px;"></i>${sanitizeInput(item)}`;
+                dietList.appendChild(li);
+            });
+            dietDiv.style.display = "block";
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const formSections = document.querySelectorAll('.form-section');
+            const progressSteps = document.querySelectorAll('.progress-step');
+            const nextButtons = document.querySelectorAll('.next-btn');
+            const prevButtons = document.querySelectorAll('.prev-btn');
+            const searchButton = document.getElementById('search-btn');
+            const newSearchButton = document.getElementById('new-search-btn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const medicationResults = document.getElementById('medicationResults');
+            const printButton = document.getElementById('print-btn');
+
+            let currentSection = 0;
+
+            if (localStorage.getItem("loggedIn") === "true") {
+                showMain();
+                checkSession();
+            } else {
+                showLogin();
+            }
+
+            setInterval(checkSession, 60000);
+
+            nextButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    if (validateSection(currentSection)) {
+                        navigateToSection(currentSection + 1);
+                        if (currentSection === 2) {
+                            preselectDietCondition();
+                        }
+                    }
+                });
+            });
+
+            prevButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    navigateToSection(currentSection - 1);
+                });
+            });
+
+            searchButton.addEventListener('click', function () {
+                if (validateSection(currentSection)) {
+                    navigateToSection(currentSection + 1);
+                    searchDrugsCom();
+                }
+            });
+
+            newSearchButton.addEventListener('click', function () {
+                navigateToSection(0);
+                document.getElementById('medicationForm').reset();
+                medicationResults.innerHTML = '';
+                document.getElementById('dietPlan').style.display = 'none';
+                progressSteps.forEach(step => {
+                    step.classList.remove('completed');
+                    if (step.dataset.step === "1") {
+                        step.classList.add('active');
+                    } else {
+                        step.classList.remove('active');
+                    }
+                });
+            });
+
+            printButton.addEventListener('click', function () {
+                const resultsSection = document.getElementById('results-section');
+                const name = document.getElementById('Name').value || 'Not provided';
+                const age = document.getElementById('age').value || 'Not provided';
+                const phoneNumber = document.getElementById('country-code').value + document.getElementById('phone-number-input').value || 'Not provided';
+                const disease = document.getElementById('diseaseSelect').value || 'Not selected';
+                const primarySymptom = sanitizeInput(document.getElementById('primarySymptomInput').value) || 'Not provided';
+                const additionalSymptoms = Array.from(document.querySelectorAll('input[name="symptoms"]:checked')).map(el => sanitizeInput(el.value)).join(', ') || 'None';
+                const doctorConsultancy = document.querySelector('input[name="doctorConsultancy"]:checked')?.value;
+
+                let doctorConsultation = '';
+                if (doctorConsultancy === 'yes') {
+                    doctorConsultation = `
+                        <h2>Doctor Consultation</h2>
+                        <p><strong>Name:</strong> XXX</p>
+                        <p><strong>Phone Number:</strong> **********</p>
+                    `;
+                }
+
+                const description = `
+                    <h1>MediHub</h1>
+                    <h2>User Information</h2>
+                    <p><strong>Name:</strong> ${sanitizeInput(name)}</p>
+                    <p><strong>Age:</strong> ${sanitizeInput(age)}</p>
+                    <p><strong>Phone Number:</strong> ${sanitizeInput(phoneNumber)}</p>
+                    <p><strong>Disease:</strong> ${sanitizeInput(disease.charAt(0).toUpperCase() + disease.slice(1))}</p>
+                    <h2>Symptoms</h2>
+                    <p><strong>Primary Symptom:</strong> ${primarySymptom}</p>
+                    <p><strong>Additional Symptoms:</strong> ${additionalSymptoms}</p>
+                    ${doctorConsultation}
+                `;
+
+                // Filter out the demo note from results
+                const tempContainer = document.createElement('div');
+                tempContainer.innerHTML = resultsSection.innerHTML;
+                const demoNote = tempContainer.querySelector('.medication-card h3.medication-name i.fa-info-circle')?.closest('.medication-card');
+                if (demoNote) {
+                    demoNote.remove();
+                }
+
+                let printContent = `
+                    ${description}
+                    <h2>Medication Recommendations</h2>
+                    ${tempContainer.innerHTML}
+                `;
+
+                const printHTML = `
+                    <html>
+                    <head>
+                        <title>MediHub Report</title>
+                        <style>
+                            body { font-family: 'Poppins', sans-serif; padding: 20px; }
+                            .form-section { display: block; }
+                            button, .next-btn, .prev-btn, .progress-bar, header, footer, nav { display: none; }
+                            h1 { color: #45862c; text-align: center; }
+                            h2 { color: #45862c; margin: 20px 0; }
+                            .medication-details { display: block; }
+                            p { margin: 5px 0; }
+                        </style>
+                    </head>
+                    <body>
+                        ${printContent}
+                    </body>
+                    </html>
+                `;
+
+                const printWindow = window.open('', '_blank');
+                if (!printWindow) {
+                    alert('Failed to open print window. Please allow popups for this site.');
+                    return;
+                }
+                printWindow.document.write(printHTML);
+                printWindow.document.close();
+                printWindow.focus();
+                printWindow.print();
+                printWindow.close();
+            });
+
+            function navigateToSection(sectionIndex) {
+                formSections[currentSection].classList.remove('active');
+                progressSteps[currentSection].classList.remove('active');
+                currentSection = sectionIndex;
+                formSections[currentSection].classList.add('active');
+                progressSteps[currentSection].classList.add('active');
+                for (let i = 0; i < sectionIndex; i++) {
+                    progressSteps[i].classList.add('completed');
+                }
+            }
+
+            function validateSection(sectionIndex) {
+                const currentSection = formSections[sectionIndex];
+                const requiredInputs = currentSection.querySelectorAll('[required]');
+                let isValid = true;
+
+                requiredInputs.forEach(input => {
+                    const errorDiv = document.getElementById(`${input.id}Error`) || document.createElement('div');
+                    errorDiv.className = 'error';
+                    errorDiv.style.color = 'var(--danger)';
+                    if (!input.value) {
+                        input.style.borderColor = 'var(--danger)';
+                        errorDiv.textContent = `${input.name || input.id} is required.`;
+                        isValid = false;
+                    } else if (input.id === 'pincode' && !/^\d{6}$/.test(input.value)) {
+                        input.style.borderColor = 'var(--danger)';
+                        errorDiv.textContent = 'Pincode must be 6 digits.';
+                        isValid = false;
+                    } else if (input.id === 'phone-number-input' && !/^\d{10}$/.test(input.value)) {
+                        input.style.borderColor = 'var(--danger)';
+                        errorDiv.textContent = 'Phone number must be 10 digits.';
+                        isValid = false;
+                    } else if (input.id === 'idProofNumber' && document.getElementById('idProof').value === 'Aadhaar Card' && !/^\d{12}$/.test(input.value)) {
+                        input.style.borderColor = 'var(--danger)';
+                        errorDiv.textContent = 'Aadhaar number must be 12 digits.';
+                        isValid = false;
+                    } else {
+                        input.style.borderColor = 'var(--light-gray)';
+                        errorDiv.textContent = '';
+                    }
+                    if (!document.getElementById(`${input.id}Error`)) input.after(errorDiv);
+                });
+
+                const conditions = Array.from(document.querySelectorAll('input[name="conditions"]:checked')).map(el => el.value);
+                const conditionsError = document.getElementById('conditionsError');
+                if (conditions.includes('none') && conditions.length > 1) {
+                    conditionsError.textContent = 'Cannot select "None" with other conditions.';
+                    isValid = false;
+                } else {
+                    conditionsError.textContent = '';
+                }
+
+                if (!isValid) {
+                    alert('Please correct the errors before proceeding.');
+                }
+
+                return isValid;
+            }
+
+            document.getElementById('conditions-group').addEventListener('change', function () {
+                const conditions = Array.from(document.querySelectorAll('input[name="conditions"]:checked')).map(el => el.value);
+                const noneCheckbox = document.querySelector('input[value="none"]');
+                const otherCheckboxes = document.querySelectorAll('input[name="conditions"]:not([value="none"])');
+                if (conditions.includes('none')) {
+                    otherCheckboxes.forEach(cb => cb.disabled = true);
+                } else {
+                    otherCheckboxes.forEach(cb => cb.disabled = false);
+                }
+            });
+
+            async function searchDrugsCom() {
+                loadingSpinner.style.display = 'block';
+                resultsContainer.style.display = 'none';
+                const primarySymptom = sanitizeInput(document.getElementById('primarySymptomInput').value);
+                const additionalSymptoms = Array.from(document.querySelectorAll('input[name="symptoms"]:checked')).map(el => sanitizeInput(el.value));
+                const duration = document.getElementById('symptomDuration').value;
+                const severity = document.getElementById('symptomSeverity').value;
+                const age = document.getElementById('age').value;
+                const gender = document.getElementById('gender').value;
+                const conditions = Array.from(document.querySelectorAll('input[name="conditions"]:checked')).map(el => sanitizeInput(el.value));
+                const currentMeds = sanitizeInput(document.getElementById('currentMeds').value);
+                const allergies = sanitizeInput(document.getElementById('allergies').value);
+                const doctorConsultancy = document.querySelector('input[name="doctorConsultancy"]:checked')?.value;
+
+                const searchParams = {
+                    primarySymptom,
+                    additionalSymptoms,
+                    duration,
+                    severity,
+                    age,
+                    gender,
+                    conditions,
+                    currentMeds,
+                    allergies,
+                    doctorConsultancy
+                };
+
+                console.log("Search parameters:", searchParams);
+
+                try {
+                    const response = await new Promise(resolve => {
+                        setTimeout(() => {
+                            resolve({ ok: true, json: () => getMedicationsForSymptoms(searchParams) });
+                        }, 1000);
+                    });
+
+                    if (!response.ok) throw new Error('API request failed');
+                    const medications = await response.json();
+                    loadingSpinner.style.display = 'none';
+                    resultsContainer.style.display = 'block';
+                    displayMedicationResults(medications, searchParams);
+                } catch (error) {
+                    console.error('API Error:', error);
+                    medicationResults.innerHTML = '<p>Error fetching medications. Please try again later.</p>';
+                    loadingSpinner.style.display = 'none';
+                    resultsContainer.style.display = 'block';
+                }
+            }
+
+            function displayMedicationResults(medications, searchParams) {
+                medicationResults.innerHTML = '';
+
+                if (searchParams.doctorConsultancy === 'yes') {
+                    const consultationCard = document.createElement('div');
+                    consultationCard.className = 'medication-card';
+                    consultationCard.innerHTML = `
+                        <div class="medication-header">
+                            <h3 class="medication-name">Doctor Consultation Recommended</h3>
+                        </div>
+                        <div class="medication-details active">
+                            <div class="detail-row">
+                                <div class="detail-label">Doctor Name:</div>
+                                <div class="detail-value">XXX</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Phone Number:</div>
+                                <div class="detail-value">**********</div>
+                            </div>
+                        </div>
+                    `;
+                    medicationResults.appendChild(consultationCard);
+                }
+
+                if (medications.length === 0) {
+                    const noResults = document.createElement('div');
+                    noResults.className = 'medication-card';
+                    noResults.innerHTML = `
+                        <h3 class="medication-name">No specific medications found</h3>
+                        <div class="medication-details">
+                            <p>Based on your symptoms and health history, we couldn't find specific medication recommendations.</p>
+                            <p>Consider consulting with a healthcare provider for personalized advice.</p>
+                        </div>
+                    `;
+                    medicationResults.appendChild(noResults);
+                    return;
+                }
+
+                medications.forEach(med => {
+                    const medCard = document.createElement('div');
+                    medCard.className = 'medication-card';
+                    let warnings = med.warnings && med.warnings.length > 0 ? `<div class="medication-details warning">Warnings: ${sanitizeInput(med.warnings.join(' '))}</div>` : '';
+                    let interactions = med.interactions && med.interactions.length > 0 ? `
+                        <div class="detail-row">
+                            <div class="detail-label">Interactions:</div>
+                            <div class="detail-value">${sanitizeInput(med.interactions.join(', '))}</div>
+                        </div>
+                    ` : '';
+                    medCard.innerHTML = `
+                        <div class="medication-header" onclick="this.nextElementSibling.classList.toggle('active')">
+                            <h3 class="medication-name">${sanitizeInput(med.name)}</h3>
+                            <span class="medication-type">${sanitizeInput(med.type)}</span>
+                        </div>
+                        <div class="medication-details">
+                            <div class="detail-row">
+                                <div class="detail-label">Purpose:</div>
+                                <div class="detail-value">${sanitizeInput(med.purpose)}</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Dosage:</div>
+                                <div class="detail-value">${sanitizeInput(med.dosage)}</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Side Effects:</div>
+                                <div class="detail-value">${sanitizeInput(med.sideEffects.join(', '))}</div>
+                            </div>
+                            ${interactions}
+                            <div class="detail-row">
+                                <div class="detail-label">More Info:</div>
+                                <div class="detail-value"><a href="${med.link}" target="_blank" style="color: var(--primary);">View on Drugs.com</a></div>
+                            </div>
+                        </div>
+                        ${warnings}
+                    `;
+                    medicationResults.appendChild(medCard);
+                });
+            }
+
+            function preselectDietCondition() {
+                const conditions = Array.from(document.querySelectorAll('input[name="conditions"]:checked')).map(el => el.value);
+                const diseaseSelect = document.getElementById('diseaseSelect');
+                const conditionMap = {
+                    'diabetes': 'diabetes',
+                    'high blood pressure': 'hypertension',
+                    'heart disease': 'heartDisease',
+                    'kidney disease': 'kidneyDisease'
+                };
+                for (let condition of conditions) {
+                    if (conditionMap[condition]) {
+                        diseaseSelect.value = conditionMap[condition];
+                        showDietPlan();
+                        break;
+                    }
+                }
+            }
+
+            function getMedicationsForSymptoms(params) {
+                const { primarySymptom, additionalSymptoms, conditions, allergies, age, gender, currentMeds } = params;
+                const allMedications = [];
+
+                if (primarySymptom === 'Headache') {
+                    allMedications.push({
+                        name: 'Acetaminophen (Tylenol)',
+                        type: 'Over-the-counter',
+                        purpose: 'Pain relief and fever reduction',
+                        dosage: '500-1000mg every 4-6 hours as needed (max 4000mg/day)',
+                        sideEffects: ['Liver damage (if overdosed)', 'Allergic reactions'],
+                        warnings: conditions.includes('liver disease') ? ['Not recommended for people with liver disease'] : [],
+                        interactions: ['Alcohol', 'Warfarin'],
+                        link: 'https://www.drugs.com/acetaminophen.html'
+                    });
+                    if (!additionalSymptoms.includes('cold') && !conditions.includes('kidney disease')) {
+                        allMedications.push({
+                            name: 'Ibuprofen (Advil, Motrin)',
+                            type: 'Over-the-counter',
+                            purpose: 'Pain relief, cold reduction, and anti-inflammatory',
+                            dosage: '200-400mg every 4-6 hours as needed',
+                            sideEffects: ['Stomach upset', 'Increased bleeding risk', 'Kidney problems'],
+                            warnings: [],
+                            interactions: ['Aspirin', 'Blood pressure medications'],
+                            link: 'https://www.drugs.com/ibuprofen.html'
+                        });
+                    }
+                }
+
+                if (primarySymptom === 'Fever' || additionalSymptoms.includes('cold')) {
+                    allMedications.push({
+                        name: 'Naproxen (Aleve)',
+                        type: 'Over-the-counter',
+                        purpose: 'Relieves fever, pain, and inflammation',
+                        dosage: '220mg every 8-12 hours (max 660mg/day)',
+                        sideEffects: ['Stomach upset', 'Dizziness', 'Rash'],
+                        warnings: conditions.includes('heart disease') || conditions.includes('stomach ulcer') ? ['Use with caution in heart disease or ulcers'] : [],
+                        interactions: ['Aspirin', 'SSRIs', 'Antihypertensives'],
+                        link: 'https://www.drugs.com/naproxen.html'
+                    });
+                    allMedications.push({
+                        name: 'Acetaminophen (Tylenol)',
+                        type: 'Over-the-counter',
+                        purpose: 'Fever reduction and pain relief',
+                        dosage: '500-1000mg every 4-6 hours as needed (max 4000mg/day)',
+                        sideEffects: ['Liver damage (if overdosed)', 'Allergic reactions'],
+                        warnings: conditions.includes('liver disease') ? ['Not recommended for people with liver disease'] : [],
+                        interactions: ['Alcohol', 'Warfarin'],
+                        link: 'https://www.drugs.com/acetaminophen.html'
+                    });
+                    if (!conditions.includes('kidney disease')) {
+                        allMedications.push({
+                        name: 'Ibuprofen (Advil, Motrin)',
+                        type: 'Over-the-counter',
+                        purpose: 'Cold reduction and pain relief',
+                        dosage: '200-400mg every 6-8 hours as needed',
+                        sideEffects: ['Stomach upset', 'Increased bleeding risk', 'Kidney problems'],
+                        warnings: [],
+                        interactions: ['Aspirin', 'Blood pressure medications'],
+                        link: 'https://www.drugs.com/ibuprofen.html'
+                        });
+                    }
+                }
+
+                if (primarySymptom === 'Cough') {
+                    allMedications.push({
+                        name: 'Bromhexine',
+                        type: 'Over-the-counter (in some countries)',
+                        purpose: 'Mucolytic agent that breaks down mucus and relieves productive cough',
+                        dosage: '8-16mg three times a day (adult dose)',
+                        sideEffects: ['Stomach upset', 'Nausea', 'Allergic reactions'],
+                        warnings: [],
+                        interactions: ['Antitussives (may reduce effectiveness)', 'Antibiotics (may enhance absorption)'],
+                        link: 'https://www.drugs.com/international/bromhexine.html'
+                    });
+                    if (additionalSymptoms.includes('nasal congestion')) {
+                        allMedications.push({
+                            name: 'Dextromethorphan/Guaifenesin (Robitussin DM)',
+                            type: 'Over-the-counter',
+                            purpose: 'Cough suppression and mucus relief',
+                            dosage: '10-20mL every 4 hours as needed',
+                            sideEffects: ['Drowsiness', 'Dizziness', 'Nausea'],
+                            warnings: [],
+                            interactions: ['MAO inhibitors', 'Other cough medicines'],
+                            link: 'https://www.drugs.com/robitussin-dm.html'
+                        });
+                    } else {
+                        allMedications.push({
+                            name: 'Dextromethorphan (Delsym)',
+                            type: 'Over-the-counter',
+                            purpose: 'Cough suppression',
+                            dosage: '10-20mg every 4 hours as needed',
+                            sideEffects: ['Drowsiness', 'Dizziness'],
+                            warnings: [],
+                            interactions: ['MAO inhibitors', 'Other cough medicines'],
+                            link: 'https://www.drugs.com/dextromethorphan.html'
+                        });
+                    }
+                }
+
+                if (primarySymptom === 'Sore Throat') {
+                    allMedications.push({
+                        name: 'Benzocaine (Chloraseptic)',
+                        type: 'Over-the-counter',
+                        purpose: 'Sore throat pain relief',
+                        dosage: 'Spray or lozenge as directed every 2 hours',
+                        sideEffects: ['Mild stinging', 'Numbness'],
+                        warnings: ['Do not use for more than 2 days without consulting doctor'],
+                        interactions: [],
+                        link: 'https://www.drugs.com/chloraseptic.html'
+                    });
+                }
+
+                if (primarySymptom === 'Heartburn') {
+                    allMedications.push({
+                        name: 'Omeprazole (Prilosec)',
+                        type: 'Over-the-counter',
+                        purpose: 'Reduces stomach acid to relieve heartburn, acid reflux, and GERD',
+                        dosage: '20mg once daily before a meal (usually taken for 14 days)',
+                        sideEffects: ['Headache', 'Stomach pain', 'Gas', 'Nausea'],
+                        warnings: conditions.includes('liver disease') ? ['Use with caution in liver impairment'] : [],
+                        interactions: ['Clopidogrel', 'Warfarin', 'Methotrexate', 'Diazepam'],
+                        link: 'https://www.drugs.com/omeprazole.html'
+                    });
+                    allMedications.push({
+                        name: 'Famotidine (Pepcid)',
+                        type: 'Over-the-counter',
+                        purpose: 'Heartburn relief',
+                        dosage: '10-20mg every 12 hours as needed',
+                        sideEffects: ['Headache', 'Constipation', 'Diarrhea'],
+                        warnings: [],
+                        interactions: ['Atazanavir', 'Dasatinib'],
+                        link: 'https://www.drugs.com/famotidine.html'
+                    });
+                }
+
+                if (primarySymptom === 'Diarrhea') {
+                    allMedications.push({
+                        name: 'Bismuth Subsalicylate (Pepto-Bismol)',
+                        type: 'Over-the-counter',
+                        purpose: 'Reduces diarrhea, nausea, and stomach discomfort',
+                        dosage: '524mg every 30-60 minutes as needed (max 8 doses/day)',
+                        sideEffects: ['Black tongue or stools', 'Constipation', 'Tinnitus (ringing in ears)'],
+                        warnings: conditions.includes('aspirin allergy') || conditions.includes('bleeding disorder') ? ['Avoid if allergic to aspirin or with bleeding risk'] : [],
+                        interactions: ['Anticoagulants', 'Tetracycline antibiotics'],
+                        link: 'https://www.drugs.com/bismuth-subsalicylate.html'
+                    });
+                    allMedications.push({
+                        name: 'Loperamide (Imodium)',
+                        type: 'Over-the-counter',
+                        purpose: 'Diarrhea relief',
+                        dosage: '2mg after first loose stool, then 1mg after each subsequent stool (max 8mg/24hr)',
+                        sideEffects: ['Constipation', 'Dizziness', 'Drowsiness'],
+                        warnings: ['Do not use if you have fever or bloody stools'],
+                        interactions: ['Quinidine', 'Ritonavir'],
+                        link: 'https://www.drugs.com/loperamide.html'
+                    });
+                }
+
+                if (primarySymptom === 'Constipation') {
+                    allMedications.push({
+                        name: 'Polyethylene Glycol (Miralax)',
+                        type: 'Over-the-counter',
+                        purpose: 'Constipation relief',
+                        dosage: '17g powder in 4-8oz liquid daily',
+                        sideEffects: ['Bloating', 'Gas', 'Nausea'],
+                        warnings: conditions.includes('pregnant') ? ['Consult doctor before use if pregnant'] : [],
+                        interactions: [],
+                        link: 'https://www.drugs.com/miralax.html'
+                    });
+                }
+
+                if (primarySymptom === 'Rash') {
+                    allMedications.push({
+                        name: 'Hydrocortisone Cream 1%',
+                        type: 'Over-the-counter',
+                        purpose: 'Itch and rash relief',
+                        dosage: 'Apply thin layer to affected area 1-2 times daily',
+                        sideEffects: ['Skin thinning (with prolonged use)', 'Burning sensation'],
+                        warnings: ['Do not use on face or genitals unless directed by doctor'],
+                        interactions: [],
+                        link: 'https://www.drugs.com/hydrocortisone-topical.html'
+                    });
+                }
+if (primarySymptom === 'Nasal Congestion') {
+    allMedications.push({
+        name: 'Pseudoephedrine (Sudafed)',
+        type: 'Over-the-counter',
+        purpose: 'Relieves nasal congestion due to colds or allergies',
+        dosage: '30-60mg every 4-6 hours as needed (max 240mg/day)',
+        sideEffects: ['Nervousness', 'Insomnia', 'Increased heart rate'],
+        warnings: conditions.includes('high blood pressure') || conditions.includes('heart disease') ? ['Avoid in hypertension or heart disease'] : [],
+        interactions: ['MAO inhibitors', 'Beta-blockers'],
+        link: 'https://www.drugs.com/pseudoephedrine.html'
+    });
+    if (additionalSymptoms.includes('sneezing')) {
+        allMedications.push({
+            name: 'Cetirizine (Zyrtec)',
+            type: 'Over-the-counter',
+            purpose: 'Relieves nasal congestion, sneezing, and allergy symptoms',
+            dosage: '10mg once daily',
+            sideEffects: ['Drowsiness', 'Dry mouth', 'Fatigue'],
+            warnings: conditions.includes('kidney disease') ? ['Consult doctor before use in kidney disease'] : [],
+            interactions: ['Alcohol', 'Sedatives'],
+            link: 'https://www.drugs.com/cetirizine.html'
+        });
+    }
+}
+
+if (primarySymptom === 'Body Aches') {
+    allMedications.push({
+        name: 'Aspirin',
+        type: 'Over-the-counter',
+        purpose: 'Relieves body aches, pain, and fever',
+        dosage: '325-650mg every 4-6 hours as needed (max 4000mg/day)',
+        sideEffects: ['Stomach upset', 'Heartburn', 'Bleeding risk'],
+        warnings: conditions.includes('aspirin allergy') || conditions.includes('bleeding disorder') ? ['Avoid if allergic to aspirin or with bleeding disorders'] : [],
+        interactions: ['Anticoagulants', 'NSAIDs'],
+        link: 'https://www.drugs.com/aspirin.html'
+    });
+    if (additionalSymptoms.includes('fatigue')) {
+        allMedications.push({
+            name: 'Acetaminophen/Ibuprofen Combination (Advil Dual Action)',
+            type: 'Over-the-counter',
+            purpose: 'Relieves body aches and fatigue-related discomfort',
+            dosage: '2 caplets every 8 hours as needed (max 6 caplets/day)',
+            sideEffects: ['Stomach upset', 'Dizziness', 'Liver damage (if overdosed)'],
+            warnings: conditions.includes('liver disease') || conditions.includes('kidney disease') ? ['Avoid in liver or kidney disease'] : [],
+            interactions: ['Alcohol', 'Warfarin'],
+            link: 'https://www.drugs.com/advil-dual-action.html'
+        });
+    }
+}
+
+if (primarySymptom === 'Fatigue') {
+    allMedications.push({
+        name: 'Caffeine (NoDoz)',
+        type: 'Over-the-counter',
+        purpose: 'Temporary relief of fatigue and drowsiness',
+        dosage: '100-200mg every 3-4 hours as needed (max 1000mg/day)',
+        sideEffects: ['Nervousness', 'Insomnia', 'Increased heart rate'],
+        warnings: conditions.includes('heart disease') ? ['Use with caution in heart disease'] : [],
+        interactions: ['Stimulants', 'Certain antidepressants'],
+        link: 'https://www.drugs.com/caffeine.html'
+    });
+}
+
+if (primarySymptom === 'Dizziness') {
+    allMedications.push({
+        name: 'Meclizine (Dramamine)',
+        type: 'Over-the-counter',
+        purpose: 'Relieves dizziness and motion sickness',
+        dosage: '25-50mg 1 hour before travel or as needed (max 100mg/day)',
+        sideEffects: ['Drowsiness', 'Dry mouth', 'Blurred vision'],
+        warnings: conditions.includes('asthma') ? ['Use with caution in asthma'] : [],
+        interactions: ['Alcohol', 'Sedatives'],
+        link: 'https://www.drugs.com/meclizine.html'
+    });
+}
+
+if (primarySymptom === 'Nausea') {
+    allMedications.push({
+        name: 'Dimenhydrinate (Dramamine Original)',
+        type: 'Over-the-counter',
+        purpose: 'Relieves nausea and vomiting due to motion sickness',
+        dosage: '50-100mg every 4-6 hours as needed (max 400mg/day)',
+        sideEffects: ['Drowsiness', 'Dry mouth', 'Constipation'],
+        warnings: conditions.includes('pregnant') ? ['Consult doctor before use if pregnant'] : [],
+        interactions: ['Alcohol', 'Antihistamines'],
+        link: 'https://www.drugs.com/dimenhydrinate.html'
+    });
+    if (additionalSymptoms.includes('nausea')) {
+        allMedications.push({
+            name: 'Ondansetron (Zofran)',
+            type: 'Prescription',
+            purpose: 'Prevents nausea and vomiting',
+            dosage: '8mg every 8-12 hours as needed',
+            sideEffects: ['Headache', 'Constipation', 'Fatigue'],
+            warnings: conditions.includes('liver disease') ? ['Use with caution in liver disease'] : [],
+            interactions: ['Apomorphine', 'SSRIs'],
+            link: 'https://www.drugs.com/ondansetron.html'
+        });
+    }
+}
+
+if (primarySymptom === 'Vomiting') {
+    allMedications.push({
+        name: 'Promethazine (Phenergan)',
+        type: 'Prescription',
+        purpose: 'Relieves nausea and vomiting',
+        dosage: '12.5-25mg every 4-6 hours as needed',
+        sideEffects: ['Drowsiness', 'Dry mouth', 'Blurred vision'],
+        warnings: conditions.includes('asthma') ? ['Avoid in asthma or respiratory conditions'] : [],
+        interactions: ['Alcohol', 'Opioids'],
+        link: 'https://www.drugs.com/promethazine.html'
+    });
+}
+
+if (primarySymptom === 'Abdominal Pain') {
+    allMedications.push({
+        name: 'Hyoscyamine (Levsin)',
+        type: 'Prescription',
+        purpose: 'Relieves abdominal pain and cramps due to gastrointestinal issues',
+        dosage: '0.125-0.25mg every 4 hours as needed',
+        sideEffects: ['Dry mouth', 'Blurred vision', 'Constipation'],
+        warnings: conditions.includes('pregnant') ? ['Consult doctor before use if pregnant'] : [],
+        interactions: ['Antidepressants', 'Antihistamines'],
+        link: 'https://www.drugs.com/hyoscyamine.html'
+    });
+}
+
+if (primarySymptom === 'Chest Pain') {
+    allMedications.push({
+        name: 'Nitroglycerin',
+        type: 'Prescription',
+        purpose: 'Relieves chest pain (angina) by improving blood flow',
+        dosage: '0.3-0.6mg sublingual as needed (max 3 doses 5 minutes apart)',
+        sideEffects: ['Headache', 'Dizziness', 'Flushing'],
+        warnings: conditions.includes('low blood pressure') ? ['Avoid in hypotension'] : ['Seek immediate medical attention for chest pain'],
+        interactions: ['Sildenafil', 'Other vasodilators'],
+        link: 'https://www.drugs.com/nitroglycerin.html'
+    });
+}
+
+if (primarySymptom === 'Shortness of Breath') {
+    allMedications.push({
+        name: 'Albuterol (ProAir HFA)',
+        type: 'Prescription',
+        purpose: 'Relieves shortness of breath due to asthma or bronchospasm',
+        dosage: '1-2 puffs every 4-6 hours as needed',
+        sideEffects: ['Tremors', 'Nervousness', 'Increased heart rate'],
+        warnings: conditions.includes('heart disease') ? ['Use with caution in heart disease'] : [],
+        interactions: ['Beta-blockers', 'Diuretics'],
+        link: 'https://www.drugs.com/albuterol.html'
+    });
+}
+
+if (primarySymptom === 'Joint Pain') {
+    allMedications.push({
+        name: 'Naproxen (Aleve)',
+        type: 'Over-the-counter',
+        purpose: 'Relieves joint pain and inflammation',
+        dosage: '220mg every 8-12 hours (max 660mg/day)',
+        sideEffects: ['Stomach upset', 'Dizziness', 'Rash'],
+        warnings: conditions.includes('heart disease') || conditions.includes('stomach ulcer') ? ['Use with caution in heart disease or ulcers'] : [],
+        interactions: ['Aspirin', 'SSRIs', 'Antihypertensives'],
+        link: 'https://www.drugs.com/naproxen.html'
+    });
+}
+
+if (primarySymptom === 'Muscle Weakness') {
+    allMedications.push({
+        name: 'Pyridostigmine (Mestinon)',
+        type: 'Prescription',
+        purpose: 'Improves muscle strength in conditions like myasthenia gravis',
+        dosage: '60-120mg every 3-4 hours as prescribed',
+        sideEffects: ['Nausea', 'Diarrhea', 'Muscle cramps'],
+        warnings: conditions.includes('asthma') ? ['Use with caution in asthma'] : [],
+        interactions: ['Atropine', 'Other cholinesterase inhibitors'],
+        link: 'https://www.drugs.com/pyridostigmine.html'
+    });
+}
+
+if (primarySymptom === 'Numbness or Tingling') {
+    allMedications.push({
+        name: 'Gabapentin (Neurontin)',
+        type: 'Prescription',
+        purpose: 'Relieves neuropathic pain and numbness/tingling',
+        dosage: '300-600mg three times daily as prescribed',
+        sideEffects: ['Drowsiness', 'Dizziness', 'Fatigue'],
+        warnings: conditions.includes('kidney disease') ? ['Adjust dose in kidney disease'] : [],
+        interactions: ['Alcohol', 'Opioids'],
+        link: 'https://www.drugs.com/gabapentin.html'
+    });
+}
+
+if (primarySymptom === 'Seizures') {
+    allMedications.push({
+        name: 'Levetiracetam (Keppra)',
+        type: 'Prescription',
+        purpose: 'Controls seizures in epilepsy',
+        dosage: '500-1500mg twice daily as prescribed',
+        sideEffects: ['Drowsiness', 'Weakness', 'Mood changes'],
+        warnings: conditions.includes('kidney disease') ? ['Adjust dose in kidney disease'] : [],
+        interactions: ['Other antiepileptics', 'Alcohol'],
+        link: 'https://www.drugs.com/levetiracetam.html'
+    });
+}
+
+if (primarySymptom === 'Mood Changes') {
+    allMedications.push({
+        name: 'Sertraline (Zoloft)',
+        type: 'Prescription',
+        purpose: 'Treats mood changes due to depression or anxiety',
+        dosage: '50-200mg once daily as prescribed',
+        sideEffects: ['Nausea', 'Insomnia', 'Headache'],
+        warnings: conditions.includes('pregnant') ? ['Consult doctor before use if pregnant'] : [],
+        interactions: ['MAO inhibitors', 'NSAIDs'],
+        link: 'https://www.drugs.com/sertraline.html'
+    });
+}
+
+// Additional medications for remaining additional symptoms (checkbox group)
+if (additionalSymptoms.includes('chills')) {
+    allMedications.push({
+        name: 'Acetaminophen (Tylenol)',
+        type: 'Over-the-counter',
+        purpose: 'Relieves chills and fever',
+        dosage: '500-1000mg every 4-6 hours as needed (max 4000mg/day)',
+        sideEffects: ['Liver damage (if overdosed)', 'Allergic reactions'],
+        warnings: conditions.includes('liver disease') ? ['Not recommended for people with liver disease'] : [],
+        interactions: ['Alcohol', 'Warfarin'],
+        link: 'https://www.drugs.com/acetaminophen.html'
+    });
+}
+
+
+                return allMedications.filter(med => {
+                    return true;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
